@@ -44,7 +44,9 @@ export class NrqlAlert extends cdk.Construct {
           ExpectedGroups: props.expectedGroups,
           IgnoreOverlap: props.ignoreOverlap,
           ValueFunction: props.valueFunction,
-          Terms: cdk.Lazy.anyValue(()=>props.terms.map(this.addTerm)),
+          Terms: cdk.Lazy.listValue(()=>({
+            produce: props.terms.map(this.addTerm)
+          })),
           Nrql: {
             Query: props.query,
             SinceValue: props.sinceValue
