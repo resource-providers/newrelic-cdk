@@ -1,1 +1,1 @@
-export * from './alert';
+export * from './nrql-alert';
