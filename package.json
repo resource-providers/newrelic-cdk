@@ -7,13 +7,14 @@
   "author": "Joe Snell <joepsnell@gmail.com>",
   "license": "MIT",
   "files": [
-    "lib"
+    "dist"
   ],
   "scripts": {
     "dev": "tsc -w",
-    "build": "tsc",
+    "build": "jsii",
     "lint": "eslint . --ext .ts",
-    "test": "jest"
+    "test": "yarn lint && jest",
+    "package": "jsii-pacmak"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.2.0",
