@@ -28,6 +28,31 @@
     "jsii": "latest",
     "jsii-pacmak": "latest"
   },
+    "repository": {
+    "url": "https://github.com/wulfmann/newrelic-cdk",
+    "type": "git"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "versionFormat": "short",
+    "targets": {
+      "java": {
+        "package": "org.newrelic-cdk",
+        "maven": {
+          "groupId": "org.newrelic-cdk",
+          "artifactId": "newrelic-cdk"
+        }
+      },
+      "python": {
+        "distName": "newrelic-cdk",
+        "module": "newrelic_cdk"
+      },
+      "dotnet": {
+        "namespace": "Org.NewrelicCdk",
+        "packageId": "Org.NewrelicCdk"
+      }
+    }
+  },
   "jest": {
     "roots": [
       "<rootDir>"
