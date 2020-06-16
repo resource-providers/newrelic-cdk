@@ -1,34 +1,38 @@
 import * as cdk from '@aws-cdk/core';
 
 export interface Term {
-  duration: string;
-  operator: string;
-  priority: string;
-  threshold: string;
-  timeFunction: string;
+  readonly duration: string;
+  readonly termOperator: string;
+  readonly priority: string;
+  readonly threshold: string;
+  readonly timeFunction: string;
 }
 
 export interface NrqlAlertProps {
-  apiKey: cdk.SecretValue;
-  policyId: number;
-  terms?: Term[];
-  enabled: boolean;
-  name: string;
-  id: number;
-  type: string;
-  runbookUrl: string;
-  expectedGroups: number;
-  ignoreOverlap: boolean;
-  valueFunction: string;
-  query: string;
-  sinceValue: string;
+  readonly apiKey: cdk.SecretValue;
+  readonly policyId: number;
+  readonly terms?: Term[];
+  readonly enabled: boolean;
+  readonly name: string;
+  readonly id: number;
+  readonly type?: string;
+  readonly runbookUrl: string;
+  readonly expectedGroups: number;
+  readonly ignoreOverlap: boolean;
+  readonly valueFunction: string;
+  readonly query: string;
+  readonly sinceValue: string;
 }
 
-export class NrqlAlert extends cdk.Construct {
-  private readonly terms: Term[];
+export interface INrqlAlert extends cdk.IResource {};
+
+export class NrqlAlert extends cdk.Resource implements INrqlAlert {
+  private readonly terms: Term[] = [];
 
   constructor(scope: cdk.Construct, id: string, props: NrqlAlertProps) {
-    super(scope, id);
+    super(scope, id, {
+      physicalName: props.name,
+    });
 
     new cdk.CfnResource(this, 'Resource', {
       type: 'NewRelic::Alerts::NrqlAlert',
@@ -69,7 +73,7 @@ export class NrqlAlert extends cdk.Construct {
   private createTerm(term: Term) {
     return {
       Duration: term.duration,
-      Operator: term.operator,
+      Operator: term.termOperator,
       Priority: term.priority,
       Threshold: term.threshold,
       TimeFunction: term.timeFunction
