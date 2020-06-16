@@ -14,7 +14,7 @@ export interface NrqlAlertProps {
   readonly terms?: Term[];
   readonly enabled: boolean;
   readonly name: string;
-  readonly id: number;
+  readonly id?: number;
   readonly type?: string;
   readonly runbookUrl: string;
   readonly expectedGroups: number;
@@ -41,7 +41,7 @@ export class NrqlAlert extends cdk.Resource implements INrqlAlert {
         PolicyId: props.policyId,
         NrqlCondition: {
           Name: props.name,
-          Id: props,
+          Id: props.id,
           Type: props.type,
           RunbookUrl: props.runbookUrl,
           Enabled: props.enabled,

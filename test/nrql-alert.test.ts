@@ -8,12 +8,11 @@ import { NrqlAlert } from '../lib';
 test('nrql-alert', () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app, 'my-stack');
-  new NrqlAlert(stack, 'Alert', {
+  const alert = new NrqlAlert(stack, 'Alert', {
     apiKey: cdk.SecretValue.plainText('TestingNonsenseKey'),
     policyId: 1,
     enabled: true,
     name: 'TestNRQLCondition',
-    id: 1,
     runbookUrl: 'www.example.com/runbook',
     expectedGroups: 1,
     ignoreOverlap: true,
@@ -21,30 +20,40 @@ test('nrql-alert', () => {
     query: 'SELECT count(*) from AwsLambdaInvocationError',
     sinceValue: '3'
   });
+  alert.addTerms({
+    duration: '1',
+    termOperator: 'above',
+    priority: 'low',
+    threshold: '20',
+    timeFunction: 'all'
+  })
   expect(stack).to(exactlyMatchTemplate({
     Resources: {
-      Alert: {
-        "ApiKey": "TestingNonsenseKey",
-        "PolicyId": 1,
-        "NrqlCondition": {
-          "Name": "TestNRQLCondition",
-          "RunbookUrl": "www.example.com/runbook",
-          "Enabled": true,
-          "ValueFunction": "string",
-          "ExpectedGroups": 1,
-          "IgnoreOverlap": true,
-          "Terms": [
-            {
-              "Duration": "1",
-              "Operator": "above",
-              "Priority": "low",
-              "Threshold": "20",
-              "TimeFunction": "all"
+      "Alert8B5C7F27": {
+        "Type": "NewRelic::Alerts::NrqlAlert",
+        "Properties": {
+          "ApiKey": "TestingNonsenseKey",
+          "PolicyId": 1,
+          "NrqlCondition": {
+            "Name": "TestNRQLCondition",
+            "RunbookUrl": "www.example.com/runbook",
+            "Enabled": true,
+            "ValueFunction": "string",
+            "ExpectedGroups": 1,
+            "IgnoreOverlap": true,
+            "Terms": [
+              {
+                "Duration": "1",
+                "Operator": "above",
+                "Priority": "low",
+                "Threshold": "20",
+                "TimeFunction": "all"
+              }
+            ],
+            "Nrql": {
+              "Query": "SELECT count(*) from AwsLambdaInvocationError",
+              "SinceValue": "3"
             }
-          ],
-          "Nrql": {
-            "Query": "SELECT count(*) from AwsLambdaInvocationError",
-            "SinceValue": "3"
           }
         }
       }
