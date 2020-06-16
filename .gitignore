@@ -3,3 +3,5 @@ tsconfig.json
 */**/*.js
 */**/*.d.ts
 .jsii
+dist
+.npmignore
