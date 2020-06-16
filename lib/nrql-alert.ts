@@ -9,16 +9,14 @@ export interface Term {
 }
 
 export interface NrqlAlertProps {
-  apiKey: cdk.Secret;
+  apiKey: cdk.SecretValue;
   policyId: number;
   terms?: Term[];
   enabled: boolean;
   name: string;
-  name: string;
   id: number;
   type: string;
   runbookUrl: string;
-  enabled: boolean;
   expectedGroups: number;
   ignoreOverlap: boolean;
   valueFunction: string;
@@ -27,6 +25,8 @@ export interface NrqlAlertProps {
 }
 
 export class NrqlAlert extends cdk.Construct {
+  private readonly terms: Term[];
+
   constructor(scope: cdk.Construct, id: string, props: NrqlAlertProps) {
     super(scope, id);
 
@@ -44,9 +44,7 @@ export class NrqlAlert extends cdk.Construct {
           ExpectedGroups: props.expectedGroups,
           IgnoreOverlap: props.ignoreOverlap,
           ValueFunction: props.valueFunction,
-          Terms: cdk.Lazy.listValue(()=>({
-            produce: props.terms.map(this.addTerm)
-          })),
+          Terms: cdk.Lazy.anyValue({ produce: () => this.renderTerms() }),
           Nrql: {
             Query: props.query,
             SinceValue: props.sinceValue
@@ -54,9 +52,21 @@ export class NrqlAlert extends cdk.Construct {
         }
       }
     });
+
+    if (props.terms) {
+      this.addTerms(...props.terms);
+    }
   }
-  
-  public addTerm(term: Term) {
+
+  public addTerms(...terms: Term[]) {
+    this.terms.push(...terms);
+  }
+
+  private renderTerms() {
+    return this.terms.map(this.createTerm)
+  }
+
+  private createTerm(term: Term) {
     return {
       Duration: term.duration,
       Operator: term.operator,
