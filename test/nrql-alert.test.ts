@@ -24,7 +24,7 @@ test('nrql-alert', () => {
     duration: '1',
     termOperator: Operator.ABOVE,
     priority: Priority.LOW,
-    threshold: '20',
+    threshold: 20,
     timeFunction: TimeFunction.ALL
   })
   expect(stack).to(exactlyMatchTemplate({
