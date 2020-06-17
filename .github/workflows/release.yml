@@ -7,7 +7,7 @@ on:
 jobs:
   build_artifact:
     name: Build and upload artifact
-    if: github.repository == 'wulfmann/constructable'
+    if: github.repository == 'wulfmann/newrelic-cdk'
     runs-on: ubuntu-latest
     container:
       image: jsii/superchain
