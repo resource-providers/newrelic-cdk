@@ -1,6 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 
-export interface Operator {
+export enum Operator {
   ABOVE='above',
   BELOW='below',
   EQUAL='equal'
@@ -12,7 +12,7 @@ export enum Priority {
   WARNING='warning'
 }
 
-export interface TimeFunction {
+export enum TimeFunction {
   /**
    * corresponding to at least once in in the UI
    */
