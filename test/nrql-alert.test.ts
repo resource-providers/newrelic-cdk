@@ -1,7 +1,7 @@
 import { expect, exactlyMatchTemplate } from '@aws-cdk/assert';
 import * as cdk from '@aws-cdk/core';
 
-import { NrqlAlert } from '../lib';
+import { NrqlAlert, Operator, Priority, TimeFunction, ValueFunction } from '../lib';
 
 // https://github.com/newrelic/cloudformation-partner-integration/blob/master/NrqlAlertCondition/src/test/resources/nrql-alert-test.json
 
@@ -16,16 +16,16 @@ test('nrql-alert', () => {
     runbookUrl: 'www.example.com/runbook',
     expectedGroups: 1,
     ignoreOverlap: true,
-    valueFunction: 'string',
+    valueFunction: ValueFunction.SUM,
     query: 'SELECT count(*) from AwsLambdaInvocationError',
     sinceValue: '3'
   });
   alert.addTerms({
     duration: '1',
-    termOperator: 'above',
-    priority: 'low',
+    termOperator: Operator.ABOVE,
+    priority: Priority.LOW,
     threshold: '20',
-    timeFunction: 'all'
+    timeFunction: TimeFunction.ALL
   })
   expect(stack).to(exactlyMatchTemplate({
     Resources: {
@@ -38,7 +38,7 @@ test('nrql-alert', () => {
             "Name": "TestNRQLCondition",
             "RunbookUrl": "www.example.com/runbook",
             "Enabled": true,
-            "ValueFunction": "string",
+            "ValueFunction": "sum",
             "ExpectedGroups": 1,
             "IgnoreOverlap": true,
             "Terms": [

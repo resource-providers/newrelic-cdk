@@ -19,7 +19,7 @@ jobs:
           yarn install
       - name: build
         run: yarn build
-      # - run: yarn test
+      - run: yarn test
       - name: create bundle
         run: yarn package
       - name: Create Release
